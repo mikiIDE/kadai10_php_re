@@ -1,0 +1,63 @@
+main {
+    position: relative;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 20px;
+    color: #2a383e;
+    font-size: 0.9rem;
+    /* background-color: #e5eaf5;; */
+    z-index: 1; /* 背景より前面に */
+}
+
+.container {
+    position: relative;
+    max-width: 1200px;
+    padding: 30px;
+    margin: 0 auto;
+    background-color: rgba(170, 210, 227, 0.3); /*上下より少し透き通る感じ*/
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+input[type="text"],
+input[type="url"],
+textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* チェックボックス周りの調整 */
+input[type="checkbox"] {
+    margin-right: 5px;
+    margin-left: 10px;
+}
+.submit-btn {
+    background-color: rgba(190, 200, 220, 0.9);
+    color: #2a383e;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.submit-btn:hover {
+    background-color: rgba(170, 190, 210, 0.9);
+}
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(190, 200, 220, 0.7);
+}

@@ -1,0 +1,49 @@
+body {
+    font-family: "DotGothic16", sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: rgba(190, 200, 220, 0.7);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 50px 10px 10px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.menu {
+    display: flex;
+    gap: 30px;
+}
+
+.menu a {
+    padding: 5px 10px;
+    text-decoration: none;
+    color: black;
+}
+
+main {
+    flex: 1;
+    /* 残りの空間を全て使用 */
+    padding: 20px;
+}
+
+.main {
+    margin: 100px auto;
+    text-align: center;
+}
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(190, 200, 220, 0.7);
+}
