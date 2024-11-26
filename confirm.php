@@ -13,18 +13,8 @@ if (!isset($_SESSION['form_data'])) {
 // セッションからデータを取得
 $data = $_SESSION['form_data'];
 ?>
+<?php include 'inc/header.php'; ?>
 
-<!DOCTYPE html>
-<html lang="ja">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/background.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
     <title>登録完了</title>
     <style>
         .confirm-container {
@@ -73,10 +63,8 @@ $data = $_SESSION['form_data'];
             color: black;
         }
     </style>
-</head>
 
 <body>
-    <?php include 'inc/header.php'; ?>
     <div class="bg"></div>
 
     <main>
@@ -136,3 +124,4 @@ $data = $_SESSION['form_data'];
 </body>
 
 </html>
+<!-- 最後のhtml閉じタグは不要かも？あとで削除して挙動確認予定 -->
