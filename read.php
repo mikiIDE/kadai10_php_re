@@ -1,32 +1,29 @@
 <!-- read.php -->
-<!-- 授業で言うところのselect.php（のはず） -->
 <?php
 ini_set("display_errors", 1);
-//2. DB接続します
-try {
-    //Password:MAMP='root',XAMPP=''
-    $pdo = new PDO('mysql:dbname=gs_db;charset=utf8;host=localhost', 'root', '');
-    // $pdo = new PDO('mysql:dbname=einekleine_kadai10_php;charset=utf8;host=*********.db.sakura.ne.jp', 'user-name', '********');
-} catch (PDOException $e) {
-    exit('DBConnection Error:' . $e->getMessage());
-}
+//2. DB接続
+// 関数ファイルを読み込む（includeではなくrequire_once推奨。二重呼び込みやエラーの際の実行を避ける）
+require_once __DIR__ . '/funcs.php';
+// DB接続
+$conn = db_conn();
 
 //２．データ登録SQL作成
 $sql = "SELECT * FROM code_links";
-$stmt = $pdo->prepare($sql);
-$status = $stmt->execute();
+$stmt = $conn->prepare($sql); //ここを$connに変更
+$status = $stmt->execute(); //クエリの実行（ここは変わらず）
 
 //３．データ表示
-$values = "";
+$values = [];
 if ($status == false) {
-    $error = $stmt->errorInfo();
-    exit("SQLError:" . $error[2]);
+    sql_error($stmt);
+}else{
+    $result = $stmt->get_result(); //結果セットを取得
+    while($row = $result->fetch_assoc()){ //fetchAllはPDOのメソッドなので、sqli用のメソッドが必要
+        $values[] = $row; //各行を配列に追加
+    }
 }
-
-//全データ取得
-$values =  $stmt->fetchAll(PDO::FETCH_ASSOC); //PDO::FETCH_ASSOC[カラム名のみで取得できるモード]
-$json = json_encode($values, JSON_UNESCAPED_UNICODE);
-
+//JSONエンコードして出力（今回は不要）（JavaScriptに渡す場合などに使う？）
+//$json = json_encode($values, JSON_UNESCAPED_UNICODE);
 ?>
     <?php include 'inc/header.php'; ?>
 
@@ -122,7 +119,7 @@ $json = json_encode($values, JSON_UNESCAPED_UNICODE);
     </style>
 
 <body>
-
+<!-- 背景用のbg -->
     <div class="bg"></div>
 
     <main>
@@ -150,8 +147,8 @@ $json = json_encode($values, JSON_UNESCAPED_UNICODE);
                         data-php="<?= $v['sort_php'] ?>"
                         data-api="<?= $v['sort_api'] ?>"
                         data-others="<?= $v['sort_others'] ?>">
-                        <h3 class="card-title"><?= htmlspecialchars($v['pagename']) ?></h3>
-                        <a href="<?= htmlspecialchars($v['url']) ?>" class="card-link" target="_blank"><?= htmlspecialchars($v['url']) ?></a>
+                        <h3 class="card-title"><?= h($v['pagename']) ?></h3>
+                        <a href="<?= h($v['url']) ?>" class="card-link" target="_blank"><?= h($v['url']) ?></a>
 
                         <div class="card-tags">
                             <!-- 条件：それがあるときのみspanをつけるよ、ってやつ -->
@@ -165,7 +162,7 @@ $json = json_encode($values, JSON_UNESCAPED_UNICODE);
 
                         <div class="card-comment">
                             <!-- nl2br → テキスト入力内の改行をbrタグに変換できる -->
-                            <?= nl2br(htmlspecialchars($v['comment'])) ?>
+                            <?= nl2br(h($v['comment'])) ?>
                         </div>
                         <button type="button" class="delete" onclick="confirmDelete(<?= $v['id'] ?>)">削除</button>
                     </div>
