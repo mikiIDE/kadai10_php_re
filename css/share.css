@@ -6,8 +6,6 @@ main {
     padding: 20px;
     color: #2a383e;
     font-size: 0.9rem;
-    /* background-color: #e5eaf5;; */
-    z-index: 1; /* 背景より前面に */
 }
 
 .container {
@@ -54,10 +52,4 @@ input[type="checkbox"] {
 }
 .submit-btn:hover {
     background-color: rgba(170, 190, 210, 0.9);
-}
-
-.footer {
-    text-align: center;
-    padding: 20px;
-    background-color: rgba(190, 200, 220, 0.7);
 }
