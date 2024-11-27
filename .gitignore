@@ -2,3 +2,4 @@ memo.txt
 sql.sql
 funcs.php
 /.env
+/vendor/
