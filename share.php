@@ -1,12 +1,9 @@
 <!-- share.php -->
-<!-- 投稿をする画面（post.phpに相当する） -->
-
-
-<body>
-    <?php
+<?php
     $page_title = '魔法分配！';  // ページのタイトルを設定
     include 'inc/header.php';
     ?>
+<body>
     <!-- 背景用 -->
     <div class="bg"></div>
     <main>
@@ -45,9 +42,6 @@
         </div>
     </main>
     <!-- Main[End] -->
-
-    <?php include 'inc/footer.php'; ?>
     <script src="js/background.js"></script> <!-- 背景用のJS -->
 </body>
-
-</html>
+<?php include 'inc/footer.php'; ?>
