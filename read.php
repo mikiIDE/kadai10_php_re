@@ -5,121 +5,118 @@ ini_set("display_errors", 1);
 // 関数ファイルを読み込む（includeではなくrequire_once推奨。二重呼び込みやエラーの際の実行を避ける）
 require_once __DIR__ . '/funcs.php';
 // DB接続
-$conn = db_conn();
+$pdo = db_conn();
 
 //２．データ登録SQL作成
 $sql = "SELECT * FROM code_links";
-$stmt = $conn->prepare($sql); //ここを$connに変更
+$stmt = $pdo->prepare($sql); //ここを$connに変更
 $status = $stmt->execute(); //クエリの実行（ここは変わらず）
 
 //３．データ表示
 $values = [];
 if ($status == false) {
     sql_error($stmt);
-}else{
-    $result = $stmt->get_result(); //結果セットを取得
-    while($row = $result->fetch_assoc()){ //fetchAllはPDOのメソッドなので、sqli用のメソッドが必要
-        $values[] = $row; //各行を配列に追加
-    }
+} else {
+    $values = $stmt->fetchAll();
 }
 //JSONエンコードして出力（今回は不要）（JavaScriptに渡す場合などに使う？）
 //$json = json_encode($values, JSON_UNESCAPED_UNICODE);
 ?>
-    <?php include 'inc/header.php'; ?>
+<?php include 'inc/header.php'; ?>
 
-    <title>魔法のレシピ</title>
+<title>魔法のレシピ</title>
 
-    <style>
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 0 20px;
+    }
 
-        /* フィルターボタン */
-        .filter-buttons {
-            margin: 20px 0;
-            text-align: center;
-        }
+    /* フィルターボタン */
+    .filter-buttons {
+        margin: 20px 0;
+        text-align: center;
+    }
 
-        .filter-btn {
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px solid #6c757d;
-            padding: 8px 16px;
-            margin: 5px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+    .filter-btn {
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px solid #6c757d;
+        padding: 8px 16px;
+        margin: 5px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
 
-        .filter-btn.active {
-            background: #6c757d;
-            color: white;
-        }
+    .filter-btn.active {
+        background: #6c757d;
+        color: white;
+    }
 
-        /* カードグリッド */
+    /* カードグリッド */
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-title {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .card-link {
+        color: #007bff;
+        text-decoration: none;
+        word-break: break-all;
+    }
+
+    .card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin: 10px 0;
+    }
+
+    .tag {
+        background: #e9ecef;
+        padding: 3px 8px;
+        border-radius: 15px;
+        font-size: 0.8em;
+    }
+
+    .card-comment {
+        margin-top: 10px;
+        font-size: 0.9em;
+        line-height: 1.6;
+        color: #666;
+    }
+
+    /* レスポンシブ対応 */
+    @media (max-width: 768px) {
         .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         }
-
-        .card {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card-title {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .card-link {
-            color: #007bff;
-            text-decoration: none;
-            word-break: break-all;
-        }
-
-        .card-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin: 10px 0;
-        }
-
-        .tag {
-            background: #e9ecef;
-            padding: 3px 8px;
-            border-radius: 15px;
-            font-size: 0.8em;
-        }
-
-        .card-comment {
-            margin-top: 10px;
-            font-size: 0.9em;
-            line-height: 1.6;
-            color: #666;
-        }
-
-        /* レスポンシブ対応 */
-        @media (max-width: 768px) {
-            .cards-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            }
-        }
-    </style>
+    }
+</style>
 
 <body>
-<!-- 背景用のbg -->
+    <!-- 背景用のbg -->
     <div class="bg"></div>
 
     <main>

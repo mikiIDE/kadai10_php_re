@@ -1,10 +1,6 @@
 <!-- insert.php -->
-<!-- DBとの接続と、SQLの作成を担当する -->
-<!-- それ以外の仕事はさせない！ -->
 <?php
-//エラー表示。下記内容をphpファイルすべての頭にくっ付けるとエラーが見える化する。
 ini_set("display_errors", 1);
-//セッションスタート
 session_start();
 
 //1. POSTデータ取得
@@ -23,14 +19,11 @@ $sort_others = isset($_POST["sort_others"]) ? 1 : 0;
 // パスワードのハッシュ化
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-//2. fileopen、ではなく、DB接続します。PHP DATA OBJECTでPDO！
-try {
-    //Password:MAMP='root',XAMPP='' dbname=自分で作成したdb名, 'root',''
-    $pdo = new PDO('mysql:dbname=gs_db;charset=utf8;host=localhost', 'root', '');
-    // $pdo = new PDO('mysql:dbname=einekleine_kadai10_php;charset=utf8;host=*********.db.sakura.ne.jp', 'user-name', '********');
-} catch (PDOException $e) {
-    exit('DBConnectError:' . $e->getMessage()); //データベース接続で起きたエラーを取得する！
-}
+//2. DB接続
+// 関数ファイルを読み込む（includeではなくrequire_once推奨。二重呼び込みやエラーの際の実行を避ける）
+require_once __DIR__ . '/funcs.php';
+// DB接続
+$pdo = db_conn();
 
 // ※追加※表示用にセッションに保存
 $_SESSION['form_data'] = [
@@ -65,12 +58,8 @@ $status = $stmt->execute(); //クエリ（要求）実行役。trueかfalseが�
 
 //４．データ登録処理後
 if ($status == false) {
-    //SQL実行時にエラーがある場合（エラーオブジェクト取得して表示）
-    $error = $stmt->errorInfo();
-    exit("SQLError:" . $error[2]);
+    sql_error($stmt);
 } else {
     $_SESSION['success_message'] = "以下の情報を登録しました！";
-    header("Location:confirm.php");
-    exit();
+    redirect("comfirm.php");
 }
-?>
