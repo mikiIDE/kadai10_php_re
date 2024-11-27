@@ -3,3 +3,5 @@ sql.sql
 funcs.php
 /.env
 /vendor/
+composer.json
+composer.lock
