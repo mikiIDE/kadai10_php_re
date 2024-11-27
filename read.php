@@ -223,7 +223,7 @@ if ($status == false) {
         }
         //編集操作用の関数
         function confirmEdit(id) {
-            window.location.href = `edit.php?id=${id}`;
+            window.location.href = `edit_confirm.php?id=${id}`;
         }
     </script>
     <script src="js/background.js"></script>

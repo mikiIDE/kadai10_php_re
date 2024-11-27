@@ -19,8 +19,6 @@
             </div>
         </div>
     </main>
-    <?php include 'inc/footer.php'; ?>
     <script src="js/background.js"></script> <!-- 背景用のJS -->
 </body>
-
-</html>
+<?php include 'inc/footer.php'; ?>
