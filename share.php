@@ -1,8 +1,9 @@
 <!-- share.php -->
 <?php
-    $page_title = '魔法分配！';  // ページのタイトルを設定
-    include 'inc/header.php';
-    ?>
+$page_title = '魔法分配！';  // ページのタイトルを設定
+include 'inc/header.php';
+?>
+
 <body>
     <!-- 背景用 -->
     <div class="bg"></div>
@@ -37,9 +38,10 @@
                     <label for="password">パスワード：</label>
                     <input type="text" id="password" name="password" placeholder="編集・削除用のパスワードをいれてください" required>
                 </div>
-                <button type="submit" class="submit-btn">掲載</button>
+                <button type="submit" class="submit-btn" id="click-btn">掲載</button>
             </form>
         </div>
+
     </main>
     <!-- Main[End] -->
     <script src="js/background.js"></script> <!-- 背景用のJS -->

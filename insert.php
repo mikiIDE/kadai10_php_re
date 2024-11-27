@@ -58,7 +58,7 @@ $stmt->bindValue(':sort_api', $sort_api, PDO::PARAM_INT);
 $stmt->bindValue(':sort_php', $sort_php, PDO::PARAM_INT);
 $stmt->bindValue(':sort_others', $sort_others, PDO::PARAM_INT);
 $stmt->bindValue(':comment', $comment, PDO::PARAM_STR);
-$stmt->bindValue(':password', $hashed_password, PDO::PARAM_STR);  // ハッシュ値なので（＝英数字なので）STR
+$stmt->bindValue(':password', $hashed_password, PDO::PARAM_STR);
 $status = $stmt->execute(); //クエリ（要求）実行役。trueかfalseが返ってくる
 
 //４．データ登録処理後

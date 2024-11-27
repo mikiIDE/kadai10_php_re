@@ -61,15 +61,45 @@ $data = $_SESSION['form_data'];
         text-decoration: none;
         color: black;
     }
+
+    /* ポップアップ用 */
+#popup-wrapper {
+    background-color: rgba(0, 0, 0, .5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    z-index: 9999; /* 追加 */
+  }
+  
+  #popup-inside {
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+    background: white;
+    margin: 10% auto;
+    padding: 20px;
+    position: relative;
+  }
+  
+  #close {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    cursor: pointer;
+  }
 </style>
 <?php include 'inc/header.php'; ?>
+
 <body>
     <div class="bg"></div>
 
     <main>
         <div class="confirm-container">
             <?php if (isset($_SESSION['success_message'])): ?>
-                <div class="success-message">
+                <div class="success-message" data-show-popup="true">  <!-- data属性を追加 -->
                     <?php
                     echo $_SESSION['success_message'];
                     unset($_SESSION['success_message']);
@@ -112,11 +142,40 @@ $data = $_SESSION['form_data'];
                 <a href="read.php" class="btn">一覧を見る</a>
             </div>
         </div>
+        <!-- ポップアップ -->
+        <div id="popup-wrapper">
+            <div id="popup-inside">
+                <div id="close">x</div>
+                <div id="message">
+                    <h2>THANK YOU !!</h2>
+                    <img src="img/halloween_nekomajo.png" width=300 height=auto alt="猫の魔法使い">
+                </div>
+            </div>
+        </div>
     </main>
     <script src="js/background.js"></script>
 </body>
 <?php
-    include 'inc/footer.php';
-    // 表示が終わったらセッションデータを削除
-    unset($_SESSION['form_data']);
-    ?>
+include 'inc/footer.php';
+// 表示が終わったらセッションデータを削除
+unset($_SESSION['form_data']);
+?>
+<script>
+    const popupWrapper = document.getElementById('popup-wrapper');
+    const close = document.getElementById('close');
+    const successMessage = document.querySelector('[data-show-popup="true"]');
+
+    // ページ読み込み時にポップアップを表示
+    window.onload = function() {
+        if (successMessage) {
+            popupWrapper.style.display = "block";
+        }
+    };
+
+    // ポップアップの外側又は「x」のマークをクリックしたときポップアップを閉じる
+    popupWrapper.addEventListener('click', e => {
+        if (e.target.id === popupWrapper.id || e.target.id === close.id) {
+            popupWrapper.style.display = 'none';
+        }
+    });
+</script>

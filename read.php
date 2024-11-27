@@ -3,7 +3,7 @@
 ini_set("display_errors", 1);
 session_start();
 
-// メッセージ表示の処理を追加
+// メッセージ表示の処理
 $success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
 $error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
 
@@ -19,8 +19,8 @@ $pdo = db_conn();
 
 //２．データ登録SQL作成
 $sql = "SELECT * FROM code_links";
-$stmt = $pdo->prepare($sql); //ここを$connに変更
-$status = $stmt->execute(); //クエリの実行（ここは変わらず）
+$stmt = $pdo->prepare($sql); 
+$status = $stmt->execute(); //クエリの実行
 
 //３．データ表示
 $values = [];
