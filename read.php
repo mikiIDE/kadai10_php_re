@@ -1,6 +1,16 @@
 <!-- read.php -->
 <?php
 ini_set("display_errors", 1);
+session_start();
+
+// メッセージ表示の処理を追加
+$success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
+$error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
+
+// メッセージを表示したら、セッションから消去
+unset($_SESSION['success_message']);
+unset($_SESSION['error_message']);
+
 //2. DB接続
 // 関数ファイルを読み込む（includeではなくrequire_once推奨。二重呼び込みやエラーの際の実行を避ける）
 require_once __DIR__ . '/funcs.php';
@@ -22,7 +32,6 @@ if ($status == false) {
 //JSONエンコードして出力（今回は不要）（JavaScriptに渡す場合などに使う？）
 //$json = json_encode($values, JSON_UNESCAPED_UNICODE);
 ?>
-<?php include 'inc/header.php'; ?>
 
 <title>魔法のレシピ</title>
 
@@ -114,6 +123,7 @@ if ($status == false) {
         }
     }
 </style>
+<?php include 'inc/header.php'; ?>
 
 <body>
     <!-- 背景用のbg -->
@@ -121,6 +131,18 @@ if ($status == false) {
 
     <main>
         <div class="container">
+            <!-- 削除・編集操作を行った場合のメッセージを表示 -->
+            <?php if ($success_message): ?>
+                <div class="alert alert-success">
+                    <?= h($success_message) ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($error_message): ?>
+                <div class="alert alert-danger">
+                    <?= h($error_message) ?>
+                </div>
+            <?php endif; ?>
             <!-- フィルターボタン -->
             <!-- data-filter="選択されているもの" -->
             <div class="filter-buttons">
@@ -162,13 +184,12 @@ if ($status == false) {
                             <?= nl2br(h($v['comment'])) ?>
                         </div>
                         <button type="button" class="delete" onclick="confirmDelete(<?= $v['id'] ?>)">削除</button>
+                        <button type="button" class="edit" onclick="confirmEdit(<?= $v['id'] ?>)">編集</button>
                     </div>
                 <?php endforeach; ?>
             </div>
         </div>
     </main>
-    <?php include 'inc/footer.php'; ?>
-    <script src="js/background.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const filterBtns = document.querySelectorAll('.filter-btn');
@@ -200,7 +221,11 @@ if ($status == false) {
         function confirmDelete(id) {
             window.location.href = `delete_confirm.php?id=${id}`;
         }
+        //編集操作用の関数
+        function confirmEdit(id) {
+            window.location.href = `edit.php?id=${id}`;
+        }
     </script>
+    <script src="js/background.js"></script>
 </body>
-
-</html>
+<?php include 'inc/footer.php'; ?>
